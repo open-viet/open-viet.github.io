@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Open Viet | Make life a bit easier</title>
+  <meta name="description" content="Open Viet — Make life a bit easier." />
+
+  <!-- FAVICON (your file path) -->
+  <link rel="icon" href="image/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="image/favicon.png" />
+
+  <meta name="theme-color" content="#f3ead6" />
+
+  <style>
+    :root{
+      --paper:#f3ead6;      /* full beige */
+      --ink:#1f2322;        /* same color as "Open Viet" text */
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+
+      --footer:#0f1211;
+      --max: 1240px;
+
+      /* toggle */
+      --toggle-dot-off: rgba(255,255,255,.92);
+      --toggle-dot-on: #22c55e; /* green */
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color: var(--ink);
+      overflow-x:hidden;
+      background: var(--paper); /* full beige */
+    }
+
+    /* DOT GRID (same movement in both modes) */
+    .dots{
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      pointer-events:none;
+
+      transform:none;
+      filter:none;
+
+      /* beige mode: dots match font color (ink) */
+      opacity:.14;
+      background:
+        radial-gradient(circle, rgba(31,35,34,.55) 1.1px, rgba(0,0,0,0) 1.2px);
+      background-size: 18px 18px;
+
+      animation: dotsMove 16s linear infinite;
+      will-change: background-position;
+    }
+
+    @keyframes dotsMove{
+      0%   { background-position: 0px 0px; }
+      100% { background-position: 180px 180px; }
+    }
+
+    .page{
+      min-height:100%;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding: 26px 18px 0;
+      width:100%;
+      flex:1;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding: 10px 0 0;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      user-select:none;
+    }
+
+    /* Logo box */
+    .mark{
+      width:34px; height:34px;
+      border-radius:10px;
+      background: rgba(31,35,34,.10);
+      border:1px solid rgba(31,35,34,.18);
+      display:grid;
+      place-items:center;
+      box-shadow: 0 10px 28px rgba(0,0,0,.12);
+      overflow:hidden; /* makes image respect rounded corners */
+    }
+
+    .mark img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+    }
+
+    .brand .name{
+      margin:0;
+      font-weight:800;
+      font-size:16px;
+      letter-spacing:.2px;
+      color: var(--ink);
+    }
+
+    /* Toggle pill */
+    .toggle{
+      border:1px solid rgba(31,35,34,.18);
+      background: rgba(255,255,255,.28);
+      color: rgba(31,35,34,.90);
+      box-shadow: 0 14px 44px rgba(0,0,0,.08);
+      border-radius:999px;
+      padding: 10px 14px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .toggle button{
+      all:unset;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      user-select:none;
+    }
+
+    .toggle .dot{
+      width:10px; height:10px;
+      border-radius:999px;
+      background: var(--toggle-dot-off); /* white when OFF */
+      box-shadow: 0 0 14px rgba(255,255,255,.10);
+    }
+
+    .toggle .label{
+      font-size:13px;
+      letter-spacing:.2px;
+    }
+
+    .toggle button:focus-visible{
+      outline: 2px solid rgba(31,35,34,.35);
+      outline-offset: 3px;
+      border-radius: 999px;
+    }
+
+    /* green dot when ON (dark mode enabled) */
+    html.dark .toggle .dot{
+      background: var(--toggle-dot-on);
+      box-shadow: 0 0 18px rgba(34,197,94,.22);
+    }
+
+    main{
+      padding: 90px 0 70px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+    }
+
+    .left{
+      max-width: 760px;
+      padding-top: 120px;
+    }
+
+    .divider{
+      width: 32px;
+      height: 3px;
+      border-radius: 99px;
+      background: rgba(31,35,34,.80);
+      margin-bottom: 18px;
+    }
+
+    .motto{
+      margin:0 0 14px;
+      font-size: 18px;
+      line-height:1.6;
+      color: rgba(31,35,34,.92);
+      max-width: 62ch;
+    }
+
+    .note{
+      margin:0;
+      color: rgba(31,35,34,.68);
+      font-size: 14px;
+      line-height:1.7;
+      max-width: 62ch;
+    }
+
+    footer{
+      background: var(--footer);
+      padding: 18px 0;
+      margin-top: 40px;
+    }
+
+    .footer-wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding: 0 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      color: rgba(255,255,255,.70);
+      font-size: 12px;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+
+    .footer-wrap .right{
+      font-family: var(--mono);
+      color: rgba(255,255,255,.55);
+    }
+
+    @media (max-width: 980px){
+      main{ padding-top: 50px; }
+      .left{ padding-top: 40px; }
+    }
+
+    /* DARK MODE */
+    html.dark body{
+      background:#000;
+      color: rgba(255,255,255,.92);
+    }
+    html.dark .brand .name{ color: rgba(255,255,255,.92); }
+
+    html.dark .mark{
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: 0 12px 34px rgba(0,0,0,.55);
+    }
+
+    html.dark .toggle{
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(20,22,28,.38);
+      color: rgba(255,255,255,.88);
+      box-shadow: 0 18px 56px rgba(0,0,0,.55);
+    }
+    html.dark .toggle button:focus-visible{
+      outline: 2px solid rgba(255,255,255,.28);
+    }
+
+    html.dark .divider{ background: rgba(255,255,255,.84); }
+    html.dark .motto{ color: rgba(255,255,255,.86); }
+    html.dark .note{ color: rgba(255,255,255,.70); }
+    html.dark footer{ background:#06070c; }
+
+    /* Same animation/keyframes — only color changes */
+    html.dark .dots{
+      opacity:.26;
+      background:
+        radial-gradient(circle, rgba(255,255,255,.55) 1.1px, rgba(255,255,255,0) 1.2px);
+      background-size: 18px 18px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <div class="dots" aria-hidden="true"></div>
+
+    <div class="wrap">
+      <header>
+        <div class="brand">
+          <!-- Header logo (same file as favicon, feel free to change) -->
+          <div class="mark">
+            <img src="image/favicon.png" alt="Open Viet logo" />
+          </div>
+          <p class="name">Open Viet</p>
+        </div>
+
+        <div class="toggle" aria-label="Theme toggle">
+          <button id="themeToggle" type="button" aria-pressed="false" aria-label="Toggle dark mode">
+            <span class="dot" aria-hidden="true"></span>
+            <span class="label">Dark Mode</span>
+          </button>
+        </div>
+      </header>
+
+      <main>
+        <section class="left" aria-label="Intro">
+          <div class="divider"></div>
+          <p class="motto"><strong>Make life a bit easier.</strong></p>
+          <p class="note">We’re working on something simple, practical, and delightful. Stay tuned.</p>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <div class="footer-wrap">
+        <div>© <span id="y"></span> Open Viet</div>
+        <div class="right">All rights reserved.</div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    const root = document.documentElement;
+    const toggleBtn = document.getElementById("themeToggle");
+
+    function setTheme(isDark) {
+      root.classList.toggle("dark", isDark);
+      toggleBtn.setAttribute("aria-pressed", String(isDark));
+
+      const themeMeta = document.querySelector('meta[name="theme-color"]');
+      themeMeta.setAttribute("content", isDark ? "#000000" : "#f3ead6");
+
+      localStorage.setItem("openviet_theme", isDark ? "dark" : "light");
+    }
+
+    const saved = localStorage.getItem("openviet_theme");
+    const systemPrefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const initialDark = saved ? (saved === "dark") : systemPrefersDark;
+    setTheme(initialDark);
+
+    toggleBtn.addEventListener("click", () => {
+      setTheme(!root.classList.contains("dark"));
+    });
+  </script>
+</body>
+</html>
